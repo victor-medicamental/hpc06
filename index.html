@@ -249,7 +249,7 @@ function updateSup(){
   let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg); if(sup)rows=rows.filter(r=>r.sup===sup);
   const list=aggregate(rows,'sup').sort((a,b)=>b.vd6-a.vd6);
   const t=totals(list); renderKpi('sup-kpi',t,list);
-  const labs=list.map(o=>firstName(o.name));
+  const labs=list.map(o=>{const p=o.name.split(' ');return p[1]||p[0];});
   makeChart('sup-c1',labs,[{label:'Mês 05',data:list.map(o=>o.vd5),backgroundColor:C5},
     {label:'Mês 06 (real)',data:list.map(o=>o.vd6),backgroundColor:C6},
     {label:'Projeção M06',data:list.map(o=>o.proj),backgroundColor:CP}]);
@@ -276,7 +276,7 @@ function updateVend(){
   const list=aggregate(rows,'vend').sort((a,b)=>b.vd6-a.vd6);
   const t=totals(list); renderKpi('vend-kpi',t,list);
   const top=list.slice(0,15);
-  const labs=top.map(o=>firstName(o.name));
+  const labs=top.map(o=>{const p=o.name.split(' ');return (p[1]||'')+' '+(p[2]||'');});
   makeChart('vend-c1',labs,[{label:'Mês 05',data:top.map(o=>o.vd5),backgroundColor:C5},
     {label:'Mês 06 (real)',data:top.map(o=>o.vd6),backgroundColor:C6},
     {label:'Projeção M06',data:top.map(o=>o.proj),backgroundColor:CP}]);
