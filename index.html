@@ -10,7 +10,7 @@
 --bg0:#070d1c;--bg1:#0c1730;--panel:#10203f;--panel2:#152a52;
 --line:#23375f;--accent:#3d7bff;--accent2:#5b9bff;
 --gold:#f4b740;--green:#34d399;--red:#f87171;
---txt:#e8eefb;--muted:#93a4c4;--navy:#0a1733;}
+--txt:#e8eefb;--muted:#93a4c4;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter','Segoe UI',Arial,sans-serif;background:radial-gradient(1200px 600px at 80% -10%,#13284e 0%,var(--bg0) 55%);color:var(--txt);padding:20px;min-height:100vh;}
 .wrap{max-width:1320px;margin:0 auto;}
@@ -52,7 +52,6 @@ th:first-child{background:var(--bg1);}
 td:first-child{background:var(--panel);font-weight:600;max-width:340px;white-space:normal;color:var(--txt);}
 tbody tr:nth-child(even) td{background:#0d1c38;}
 tbody tr:nth-child(even) td:first-child{background:#0d1c38;}
-tbody tr:hover td{background:#1b3460!important;}
 tbody tr:hover td{background:#1b3460!important;}
 tfoot td{font-weight:800;background:var(--accent)!important;color:#fff;border:none;}
 tfoot td:first-child{background:var(--accent)!important;}
@@ -125,6 +124,13 @@ Chart.defaults.font.family="'Inter','Segoe UI',Arial,sans-serif";
 Chart.defaults.borderColor='rgba(120,150,200,.12)';
 
 function uniq(a){return [...new Set(a)];}
+function firstName(full){
+  const p=full.trim().split(/\s+/);
+  let w=p[1]||p[0]||'';
+  if(/^\d/.test(w)||w==='-')w=p[2]||w;
+  w=w.replace(/[^A-Za-zÀ-ú]/g,'');
+  return w?w.charAt(0).toUpperCase()+w.slice(1).toLowerCase():full;
+}
 function fillSel(sel,opts,withAll=true){
   const prev=sel.value;
   sel.innerHTML='';
@@ -222,7 +228,7 @@ function updateReg(){
   let rows=RAW; if(f)rows=rows.filter(r=>r.reg===f);
   const list=aggregate(rows,'reg').sort((a,b)=>b.vd6-a.vd6);
   const t=totals(list); renderKpi('reg-kpi',t,list);
-  const labs=list.map(o=>o.name.split(' ')[0]);
+  const labs=list.map(o=>firstName(o.name));
   makeChart('reg-c1',labs,[{label:'Mês 05',data:list.map(o=>o.vd5),backgroundColor:C5},
     {label:'Mês 06 (real)',data:list.map(o=>o.vd6),backgroundColor:C6},
     {label:'Projeção M06',data:list.map(o=>o.proj),backgroundColor:CP}]);
@@ -243,7 +249,7 @@ function updateSup(){
   let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg); if(sup)rows=rows.filter(r=>r.sup===sup);
   const list=aggregate(rows,'sup').sort((a,b)=>b.vd6-a.vd6);
   const t=totals(list); renderKpi('sup-kpi',t,list);
-  const labs=list.map(o=>{const p=o.name.split(' ');return p[1]||p[0];});
+  const labs=list.map(o=>firstName(o.name));
   makeChart('sup-c1',labs,[{label:'Mês 05',data:list.map(o=>o.vd5),backgroundColor:C5},
     {label:'Mês 06 (real)',data:list.map(o=>o.vd6),backgroundColor:C6},
     {label:'Projeção M06',data:list.map(o=>o.proj),backgroundColor:CP}]);
@@ -270,7 +276,7 @@ function updateVend(){
   const list=aggregate(rows,'vend').sort((a,b)=>b.vd6-a.vd6);
   const t=totals(list); renderKpi('vend-kpi',t,list);
   const top=list.slice(0,15);
-  const labs=top.map(o=>{const p=o.name.split(' ');return (p[1]||'')+' '+(p[2]||'');});
+  const labs=top.map(o=>firstName(o.name));
   makeChart('vend-c1',labs,[{label:'Mês 05',data:top.map(o=>o.vd5),backgroundColor:C5},
     {label:'Mês 06 (real)',data:top.map(o=>o.vd6),backgroundColor:C6},
     {label:'Projeção M06',data:top.map(o=>o.proj),backgroundColor:CP}]);
