@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparativo Mês 05 vs Mês 06</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+--bg0:#070d1c;--bg1:#0c1730;--panel:#10203f;--panel2:#152a52;
+--line:#23375f;--accent:#3d7bff;--accent2:#5b9bff;
+--gold:#f4b740;--green:#34d399;--red:#f87171;
+--txt:#e8eefb;--muted:#93a4c4;--navy:#0a1733;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter','Segoe UI',Arial,sans-serif;background:radial-gradient(1200px 600px at 80% -10%,#13284e 0%,var(--bg0) 55%);color:var(--txt);padding:20px;min-height:100vh;}
+.wrap{max-width:1320px;margin:0 auto;}
+header{background:linear-gradient(135deg,#10254d,#0a1733);border:1px solid var(--line);border-radius:18px;padding:24px 28px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.45);position:relative;overflow:hidden;}
+header::after{content:"";position:absolute;top:-40%;right:-5%;width:280px;height:280px;background:radial-gradient(circle,rgba(61,123,255,.25),transparent 70%);}
+header h1{font-size:22px;font-weight:700;letter-spacing:.2px;}
+header p{font-size:12.5px;color:var(--muted);margin-top:7px;max-width:900px;}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{padding:12px 26px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;transition:.18s;}
+.tab.active{background:linear-gradient(135deg,var(--accent),#2b5fd0);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(61,123,255,.4);}
+.tab:hover:not(.active){background:var(--panel2);color:var(--txt);}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;}}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;}
+.fgroup{display:flex;flex-direction:column;gap:6px;min-width:230px;flex:1;}
+.fgroup label{font-size:10.5px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.6px;}
+select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;background:var(--bg1);color:var(--txt);cursor:pointer;}
+select:focus{outline:2px solid var(--accent);}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;margin-bottom:18px;}
+.kpi{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.3);position:relative;overflow:hidden;}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+.kpi.good::before{background:var(--green);} .kpi.bad::before{background:var(--red);}
+.kpi .lab{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.kpi .val{font-size:23px;font-weight:800;margin-top:8px;color:#fff;letter-spacing:.3px;}
+.kpi .sub{font-size:12px;margin-top:5px;font-weight:700;}
+.kpi .cnt{font-size:32px;font-weight:800;margin-top:6px;}
+.up{color:var(--green);} .down{color:var(--red);}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.chartbox h3{font-size:13px;color:var(--accent2);margin-bottom:12px;font-weight:700;}
+.chartbox canvas{max-height:330px;}
+.tablebox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px;overflow-x:auto;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
+th{background:var(--bg1);color:var(--accent2);font-weight:700;position:sticky;top:0;cursor:pointer;font-size:11px;text-transform:uppercase;letter-spacing:.3px;}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;}
+th:first-child{background:var(--bg1);}
+td:first-child{background:var(--panel);font-weight:600;max-width:340px;white-space:normal;color:var(--txt);}
+tbody tr:nth-child(even) td{background:#0d1c38;}
+tbody tr:nth-child(even) td:first-child{background:#0d1c38;}
+tbody tr:hover td{background:#1b3460!important;}
+tbody tr:hover td{background:#1b3460!important;}
+tfoot td{font-weight:800;background:var(--accent)!important;color:#fff;border:none;}
+tfoot td:first-child{background:var(--accent)!important;}
+.note{font-size:11px;color:var(--muted);margin-top:11px;font-style:italic;}
+@media(max-width:900px){.charts{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Comparativo de Vendas — Mês 05 vs Mês 06 / 2026</h1>
+<p>Valores em R$ &nbsp;•&nbsp; Mês 05 fechado (20 dias úteis) &nbsp;•&nbsp; Mês 06 realizado em 15 dias úteis (faltam 6) &nbsp;•&nbsp; Projeção = VMD × 21 dias úteis</p>
+</header>
+
+<div class="tabs">
+<button class="tab active" data-tab="reg">Regional</button>
+<button class="tab" data-tab="sup">Supervisor</button>
+<button class="tab" data-tab="vend">Vendedor</button>
+</div>
+
+<div class="panel active" id="panel-reg">
+  <div class="filters"><div class="fgroup"><label>Regional</label><select id="reg-f-reg"></select></div></div>
+  <div class="cards" id="reg-kpi"></div>
+  <div class="charts">
+    <div class="chartbox"><h3>VD NF: Mês 05 vs Mês 06 (realizado) vs Projeção</h3><canvas id="reg-c1"></canvas></div>
+    <div class="chartbox"><h3>VMD — Venda Média/Dia (R$/dia)</h3><canvas id="reg-c2"></canvas></div>
+  </div>
+  <div class="tablebox"><table id="reg-t"></table></div>
+  <p class="note">Clique nos cabeçalhos para ordenar. Os cards "projetando acima/abaixo" contam quantos itens da seleção têm projeção do mês 06 maior/menor que o mês 05.</p>
+</div>
+
+<div class="panel" id="panel-sup">
+  <div class="filters">
+    <div class="fgroup"><label>Regional</label><select id="sup-f-reg"></select></div>
+    <div class="fgroup"><label>Supervisor</label><select id="sup-f-sup"></select></div>
+  </div>
+  <div class="cards" id="sup-kpi"></div>
+  <div class="charts">
+    <div class="chartbox"><h3>VD NF: Mês 05 vs Mês 06 (realizado) vs Projeção</h3><canvas id="sup-c1"></canvas></div>
+    <div class="chartbox"><h3>VMD — Venda Média/Dia (R$/dia)</h3><canvas id="sup-c2"></canvas></div>
+  </div>
+  <div class="tablebox"><table id="sup-t"></table></div>
+  <p class="note">Clique nos cabeçalhos para ordenar.</p>
+</div>
+
+<div class="panel" id="panel-vend">
+  <div class="filters">
+    <div class="fgroup"><label>Regional</label><select id="vend-f-reg"></select></div>
+    <div class="fgroup"><label>Supervisor</label><select id="vend-f-sup"></select></div>
+    <div class="fgroup"><label>Vendedor</label><select id="vend-f-vend"></select></div>
+  </div>
+  <div class="cards" id="vend-kpi"></div>
+  <div class="charts">
+    <div class="chartbox"><h3>VD NF: Mês 05 vs Mês 06 (realizado) vs Projeção</h3><canvas id="vend-c1"></canvas></div>
+    <div class="chartbox"><h3>VMD — Venda Média/Dia (R$/dia)</h3><canvas id="vend-c2"></canvas></div>
+  </div>
+  <div class="tablebox"><table id="vend-t"></table></div>
+  <p class="note">Clique nos cabeçalhos para ordenar. Gráficos mostram o Top 15 por VD do mês 06; a tabela traz todos.</p>
+</div>
+</div>
+
+<script>
+const RAW = [{"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.02 PAULO SANTOS 08/05/23", "vd5": 18241.71, "vd6": 13236.32}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.03 WAGNER MANSILHA 13/04/26", "vd5": 3065.24, "vd6": 1352.21}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.04 MARILENE SILVA 21/03/22", "vd5": 28982.04, "vd6": 21679.32}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.05 WELLINGTON SILVA 02/02/17", "vd5": 45505.28, "vd6": 23597.51}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.06 JOSE PIMENTA 15/06/26", "vd5": 11850.53, "vd6": 2382.98}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.07 LUCIANA SILVA 03/11/25", "vd5": 11103.12, "vd6": 6642.8}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.08 ANDERSON SILVA 08/05/23", "vd5": 49151.79, "vd6": 31261.83}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.09 CELSO NONATO 11/05/26", "vd5": 10869.62, "vd6": 11092.67}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.10 THIAGO MULATO 05/04/17", "vd5": 11824.78, "vd6": 6195.49}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.11 RICARDO BIZARRIA 02/12/19", "vd5": 17129.99, "vd6": 8157.49}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.12 MATHEUS AZEVEDO 04/07/22", "vd5": 34702.48, "vd6": 26244.84}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.13 FABIO MORAIS 08/06/26", "vd5": 15353.46, "vd6": 1503.3}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.14 JOSE GONÇALVES 23/06/25", "vd5": 21519.75, "vd6": 25741.57}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.1.00 MAXWEL - SUP SPC I 02/03/26", "vend": "1.1.15 DAVI INACIO 19/02/25", "vd5": 27282.8, "vd6": 20596.66}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.10.00 VAGO 06/26", "vend": "1.10.00 VAGO 06/26", "vd5": 14958.86, "vd6": 7250.0}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.12.00 MARCIO - MC SPI I - 12/25", "vend": "1.12.00 MARCIO - MC SPI I - 12/25", "vd5": 6104.71, "vd6": 2884.51}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.01 RONILDO BITENCOURT 01/10/15", "vd5": 32188.35, "vd6": 19776.3}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.02 EMERSON CIANI 04/11/19", "vd5": 2452.0, "vd6": 22644.24}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.03 RITA SOUSA 08/08/22", "vd5": 9266.45, "vd6": 12917.39}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.04 ODAIR CIANI 05/09/16", "vd5": 9177.4, "vd6": 6864.86}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.05 VAGO 05/26", "vd5": 664.16, "vd6": 724.68}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.06 SANDRA HARANO 02/08/21", "vd5": 38974.65, "vd6": 23512.3}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.07 KLEBER MOLINA 22/02/21", "vd5": 8420.34, "vd6": 5880.87}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.08 EDER SOUZA 04/05/15", "vd5": 26480.68, "vd6": 5236.91}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.09 VANESSA COSTA 23/10/23", "vd5": 21781.78, "vd6": 14090.58}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.10 MAGIDIEL SILVA 21/06/21", "vd5": 38503.65, "vd6": 32891.35}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.11 FLAVIO MORAIS 20/10/25", "vd5": 15765.87, "vd6": 41758.81}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.12 DIEGO AGUIAR 08/09/25", "vd5": 12143.2, "vd6": 14074.92}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.13 ETNA SANTOS 04/05/16", "vd5": 6641.47, "vd6": 4831.18}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.14 ALMIR MARTINS 11/09/23", "vd5": 35057.36, "vd6": 16104.99}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.2.00 BRUNO - SUP SPC V - 02/26", "vend": "1.2.15 VAGO 04/26", "vd5": 2308.69, "vd6": 1562.25}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.01 NELSON VIANNA 19/06/24", "vd5": 13088.74, "vd6": 2747.42}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.02 PEDRO LUIS 16/08/21", "vd5": 19287.56, "vd6": 15116.03}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.03 RENATO LOPES 15/08/16", "vd5": 16347.55, "vd6": 7514.59}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.04 EZIO PAULA 18/09/23", "vd5": 21339.11, "vd6": 15338.38}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.05 JOSE SIMAO 06/03/19", "vd5": 11089.17, "vd6": 10155.99}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.06 LUARA SALLES 11/03/24", "vd5": 23806.29, "vd6": 8845.4}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.08 KARLOS EDUARDO 01/02/16", "vd5": 4323.49, "vd6": 5527.01}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.09 VAGO 05/26", "vd5": 508.95, "vd6": 1748.28}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.11 LUIZ CRISTO 13/01/25", "vd5": 20769.81, "vd6": 14008.58}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.12 VAGO 06/26", "vd5": 552.65, "vd6": 142.49}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.3.00 VILMA - SUP SPC III 03/15", "vend": "1.3.14 NILSON CANCIAN 22/06/26", "vd5": 10535.74, "vd6": 2240.15}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.01 LUIZ RODRIGUES 06/05/24", "vd5": 4716.33, "vd6": 8328.22}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.02 ANDREIA COELHO 22/04/26", "vd5": 25716.1, "vd6": 20608.61}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.03 JOAO MARTINS 17/12/18", "vd5": 7897.73, "vd6": 9586.67}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.04 JULIANA DE 12/06/17", "vd5": 51178.01, "vd6": 28026.93}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.08 LUIZ FREIXEDELO 01/06/15", "vd5": 9807.27, "vd6": 13512.49}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.09 FABIANA BUCENE 01/12/14", "vd5": 12996.43, "vd6": 7977.85}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.10 TATIANE LINO 03/07/17", "vd5": 18340.67, "vd6": 18667.9}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.13 ARIANE OLIVEIRA 09/01/23", "vd5": 94136.42, "vd6": 89124.42}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.14 JOSE CARRENHO 01/12/14", "vd5": 12817.29, "vd6": 15215.02}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.16 ANDRE BRAGA 06/11/17", "vd5": 15481.65, "vd6": 14002.96}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.17 EDNEI DALAQUA 11/03/24", "vd5": 39015.52, "vd6": 15472.14}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.4.00 S FREITAS -SUP SPI IV - 12/16", "vend": "1.4.18 VAGO 02/26", "vd5": 397.63, "vd6": 104.52}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.01 ANDREZA SOUZA 25/08/25", "vd5": 50073.1, "vd6": 26337.96}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.02 DANIEL INACIO 22/04/26", "vd5": 9158.76, "vd6": 12361.97}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.03 ANGELO OLIVEIRA 09/12/24", "vd5": 34802.27, "vd6": 23594.0}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.04 ALEXANDRE LOUBACK 13/01/25", "vd5": 21926.71, "vd6": 10846.42}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.05 JOAO GHISINE 06/03/19", "vd5": 19701.58, "vd6": 22538.37}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.06 VAGO 10/25", "vd5": 164.78, "vd6": 805.8}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.07 LUCIENE CRUZ 19/05/25", "vd5": 37227.27, "vd6": 25636.98}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.08 MARCELO GOMES 02/09/19", "vd5": 13997.37, "vd6": 5737.47}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.09 RAFAEL VICENTE 05/07/21", "vd5": 38950.79, "vd6": 42472.26}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.10 DORIVAL SCALIANTE 07/03/22", "vd5": 17684.13, "vd6": 14103.38}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.11 LILIAN MONSALVES 09/06/25", "vd5": 48796.26, "vd6": 24583.83}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.12 CARLOS CESAR 09/09/24", "vd5": 25855.84, "vd6": 17649.3}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.13 HERICA SOUZA 16/09/24", "vd5": 14817.1, "vd6": 11436.04}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.14 VAGO 05/26", "vd5": 0, "vd6": 0}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.15 CARLOS SOUZA 02/03/26", "vd5": 8583.33, "vd6": 6132.39}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.5.00 CECILIO MIGUEL SUP SPI II 08/24", "vend": "1.5.16 GABRIEL BORGES 02/03/26", "vd5": 30640.33, "vd6": 29888.84}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.01 RAFAEL VENCESLAU 13/02/23", "vd5": 37780.78, "vd6": 21872.41}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.02 DONIZETE PINHEIRO 10/04/23", "vd5": 14385.05, "vd6": 6468.61}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.03 AREDIO PARREIRA 19/02/24", "vd5": 33680.67, "vd6": 19943.03}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.04 IVANILDO SANTOS 08/07/24", "vd5": 16093.81, "vd6": 24733.16}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.05 WESLEY MYIAGAKI 17/11/25", "vd5": 10822.78, "vd6": 18709.04}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.06 ADEMAR FERREIRA 02/05/23", "vd5": 29145.46, "vd6": 15275.21}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.07 MARCOS GALINDO 04/01/17", "vd5": 49814.06, "vd6": 24039.75}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.08 MAYARA OLIVEIRA 10/06/24", "vd5": 12574.48, "vd6": 12055.85}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.09 ANGELA MOREIRA 21/07/25", "vd5": 20435.37, "vd6": 10701.98}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.10 OTHON SILVA 11/05/26", "vd5": 10548.87, "vd6": 19739.58}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.12 DIVALDO SILVA - 02/24", "vd5": 47329.64, "vd6": 34099.24}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.6.00 JOAO PIRES 08/06/26", "vend": "1.6.13 VAGO 11/25", "vd5": 976.06, "vd6": 974.17}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.8.00 MOIRA BORIN - MC SP 09/24", "vend": "1.8.00 MOIRA BORIN - MC SP 09/24", "vd5": 138189.39, "vd6": 82787.26}, {"reg": "1.0.00 LUCILENE - REG. I SPI/SPC", "sup": "1.9.00 FABIO TOTA - MC SPC/LESTE 05/15", "vend": "1.9.00 FABIO TOTA - MC SPC/LESTE 05/15", "vd5": 28299.07, "vd6": 26429.71}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.02 AMANDA RIBEIRO 17/05/21", "vd5": 49018.87, "vd6": 46625.69}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.03 EDSON PINTO 21/08/23", "vd5": 13974.57, "vd6": 16040.41}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.04 LUCAS MOTA 14/06/21", "vd5": 30825.89, "vd6": 18622.32}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.05 ADEILDO SILVA 18/06/18", "vd5": 18116.87, "vd6": 13722.69}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.06 GABRIEL AQUINO 01/08/2024", "vd5": 62457.6, "vd6": 49755.07}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.07 ERICK VERNILLO 09/03/26", "vd5": 25351.53, "vd6": 13132.94}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.10 RAQUEL RODRIGUES 09/10/23", "vd5": 36784.27, "vd6": 26647.91}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.11 GESSYKA - PJ 08/06/26", "vd5": 17217.66, "vd6": 21379.3}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.1.00 ARTHUR - SUP GO I 02/03/26", "vend": "2.1.11 VALQUIRIA HERCULINO 07/02/22", "vd5": 31227.64, "vd6": 13390.02}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.01 HELIO CASTELHANO - PJ - 01/20", "vd5": 21696.08, "vd6": 13373.34}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.02 MARCOS SILVA 19/07/21", "vd5": 60954.97, "vd6": 66728.28}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.03 DIOGO ROCHA 08/06/26", "vd5": 15857.61, "vd6": 12951.74}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.04 FABIO FILHO 22/04/26", "vd5": 1940.18, "vd6": 2221.38}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.05 MARCELO NEVES 10/10/22", "vd5": 37181.87, "vd6": 40387.34}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.06 MORGANA RODRIGUES 21/05/18", "vd5": 54612.9, "vd6": 41580.63}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.07 MARCO CARDOSO 12/01/26", "vd5": 27789.83, "vd6": 22972.41}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.08 NARAYANE ALMEIDA 13/04/26", "vd5": 8375.04, "vd6": 14534.44}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.09 ROBERTO MORAIS 10/11/25", "vd5": 16469.18, "vd6": 17067.89}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.10 DANIEL ALVES 08/06/26", "vd5": 17460.41, "vd6": 11479.39}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.12 GEZINEI RODRIGUES 12/01/26", "vd5": 11766.09, "vd6": 10394.96}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.13 VAGO 05/26", "vd5": -430.25, "vd6": -794.79}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.2.00 SUEIDE - SUP GO II 02/03/26", "vend": "2.2.14 DAVID ALVES 08/06/26", "vd5": 3358.42, "vd6": 7314.81}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.01 JULIANA NEPOMUCENO 11/05/26", "vd5": 11137.76, "vd6": 13486.8}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.02 ELIO OLIVEIRA 05/05/17", "vd5": 18005.27, "vd6": 20024.33}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.03 GABRIEL CUNHA 09/03/26", "vd5": 12754.76, "vd6": 11588.61}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.04 JOSE OLIVEIRA 14/02/24", "vd5": 11001.94, "vd6": 11779.23}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.05 DARA SANTOS 18/02/26", "vd5": 8264.74, "vd6": 8460.5}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.06 SIMAYR PEREIRA 22/04/26", "vd5": 6752.7, "vd6": 5623.34}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.07 WERLEY SANTOS 11/05/26", "vd5": 18369.83, "vd6": 11100.8}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.08 RUBENS MATOS 09/02/26", "vd5": 21215.87, "vd6": 12824.05}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.09 MARCOS FREIRE 16/03/26", "vd5": 9374.47, "vd6": 6071.1}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.10 ELY BASTOS 04/12/23", "vd5": 29520.66, "vd6": 21094.75}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.11 VAGO 06/26", "vd5": 13214.4, "vd6": 3228.73}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.12 JULIO CESAR 12/01/26", "vd5": 23363.89, "vd6": 24742.57}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.13 KAIK GOMES 15/04/24", "vd5": 35491.96, "vd6": 21327.36}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.3.00 RAFAEL - SUP GO III 01/26", "vend": "2.3.14 WESLEY CASTILHO 09/02/26", "vd5": 11790.37, "vd6": 9325.83}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.01 CLEBER SILVA 07/12/20", "vd5": 42267.07, "vd6": 28797.63}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.02 ANA FLAVIA BARBOSA 19/08/24", "vd5": 19290.31, "vd6": 12592.15}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.03 HAMILTON SOUSA 11/05/20", "vd5": 18752.26, "vd6": 14449.48}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.04 ANDERSENE CIRINO 17/04/23", "vd5": 13408.1, "vd6": 8476.42}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.05 BRUNO MONTEIRO 22/09/25", "vd5": 15383.57, "vd6": 11773.97}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.06 ANTONIO MAIA 20/06/22", "vd5": 37422.82, "vd6": 16330.47}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.07 AMAURI SILVA 13/04/26", "vd5": 10535.98, "vd6": 6527.79}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.08 FRANCISCO OLIVEIRA 10/11/25", "vd5": 7972.07, "vd6": 4525.18}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.09 CLAUDIO BARROSO 13/04/26", "vd5": 18707.42, "vd6": 8619.92}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.10 GABRIEL LOPES 19/01/26", "vd5": 8249.77, "vd6": 8359.42}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.11 SEBASTIAO MAGALHAES 11/02/25", "vd5": 23841.69, "vd6": 11499.58}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.4.00 LUCIANO AMORIM SUP. DF 06/25", "vend": "2.4.12 MAURICIO - PJ 23/02/2026", "vd5": 25971.97, "vd6": 19218.95}, {"reg": "2.0.00 ROSA - REG II GO/DF", "sup": "2.5.00 FABIANE - MC 19/01/26", "vend": "2.5.00 FABIANE - MC 19/01/26", "vd5": 144134.19, "vd6": 78569.51}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.01 RAISLA OLINTO 22/10/24", "vd5": 26025.87, "vd6": -23255.82}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.02 MAURO LOPES 06/03/23", "vd5": 19967.36, "vd6": 15273.92}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.03 LUIZ AZEVEDO 03/04/18", "vd5": 40771.84, "vd6": 38774.67}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.04 FELIX SA 06/11/17", "vd5": 15192.34, "vd6": 11112.36}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.05 CARLOS OLIVIERI 04/03/24", "vd5": 64731.77, "vd6": 27539.14}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.06 DANIEL CHAVES 02/04/18", "vd5": 82942.0, "vd6": 49367.53}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.07 MARILZA ALVES 16/09/24", "vd5": 15024.87, "vd6": 15106.05}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.08 PAMELA OLIVEIRA 22/10/24", "vd5": 26773.55, "vd6": 30592.94}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.1.00 MAURO SILVA SUP RJ I 08/24", "vend": "3.1.09 VAGO 06/26", "vd5": 19824.73, "vd6": -684.67}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.01 RACHELL PICANCO 09/06/25", "vd5": 14369.83, "vd6": 12622.07}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.02 MARCELO ALVES 09/03/26", "vd5": 7381.66, "vd6": 7696.52}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.03 ALEXANDRE VIEIRA 08/05/23", "vd5": 14206.47, "vd6": 10959.67}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.04 VAGO 05/26", "vd5": 1543.76, "vd6": 1882.59}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.05 MARCIA NUNES 01/06/17", "vd5": 25653.2, "vd6": 18694.7}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.06 FERNANDO REISSINGER 11/08/25", "vd5": 23250.48, "vd6": 16227.07}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.07 CAROLINA FERNANDES 16/03/26", "vd5": 8726.45, "vd6": 8308.83}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.08 DAISY OLIVEIRA 15/06/26", "vd5": 9725.66, "vd6": 9075.45}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.09 ADRIANA ASSUNCAO 07/07/25", "vd5": 28230.04, "vd6": 996.81}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.2.00 LAURO SILVA SUP RJ II 06/25", "vend": "3.2.10 ALEXANDRE SILVA 01/09/17", "vd5": 32951.23, "vd6": 8238.84}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.01 VAGO 03/26", "vd5": 0, "vd6": 590.94}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.02 JORGE COSTA 16/12/24", "vd5": 19766.12, "vd6": 10637.14}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.03 JANICE ALVARENGA 17/01/22", "vd5": 12598.52, "vd6": 12147.74}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.04 THIAGO GRANDINI 17/02/25", "vd5": 30999.49, "vd6": 13234.22}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.05 JORGE DRAGO 08/07/24", "vd5": 46444.51, "vd6": 25075.08}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.06 DANIELLE MASINI 03/12/18", "vd5": 17997.99, "vd6": 22149.95}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.07 LEONNAN BEAUCLAIR 10/02/25", "vd5": 12397.37, "vd6": 9387.02}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.08 DIEGO DE 01/08/17", "vd5": 9558.54, "vd6": 6066.86}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.09 JOAO MARCELINO 01/08/17", "vd5": 13293.6, "vd6": 11967.74}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.10 THIAGO GONÇALVES 08/06/26", "vd5": 5140.68, "vd6": 12764.34}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.11 GIULLIANO AMARAL 19/08/24", "vd5": 13973.76, "vd6": 10413.9}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.12 ROBERTO SOARES 21/07/25", "vd5": 14451.08, "vd6": 8510.54}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.13 RONALDO PAULA 09/12/19", "vd5": 15629.3, "vd6": 14879.66}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.3.00 LUCIANO SUP. RJ III - 01/26", "vend": "3.3.15 VAGO 06/26", "vd5": 1102.47, "vd6": 148.74}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.01 ELIANE FONSECA 13/12/21", "vd5": 24440.73, "vd6": 14473.08}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.02 SANDRO NEVES 15/07/24", "vd5": 23119.73, "vd6": 10732.52}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.03 CARLOS FRANCO 17/05/21", "vd5": 21247.12, "vd6": 13746.74}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.04 THAIZA SANTOS 18/02/26", "vd5": 10838.71, "vd6": 11071.63}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.05 EVERALDO AMARAL 07/02/22", "vd5": 19816.5, "vd6": 20634.24}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.06 HELISON DUARTE 08/09/20", "vd5": 14588.31, "vd6": 11480.57}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.07 ERICK CARNEIRO 04/04/22", "vd5": 30277.86, "vd6": 13363.32}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.08 MARCOS DE 12/08/19", "vd5": 24069.46, "vd6": 12765.95}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.09 DJALMA SIQUEIRA 12/08/19", "vd5": 7861.28, "vd6": 9440.69}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.10 MICELINO COSTA 05/03/18", "vd5": 13121.98, "vd6": 16384.74}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.4.00 ELIAS - SUP RJ V 11/25", "vend": "3.4.11 AROLDO DE 01/06/17", "vd5": 28725.61, "vd6": 18706.31}, {"reg": "3.0.00 KRIS - REG IV RJ - 04/23", "sup": "3.6.00 FERNANDA ALVES - MC 05/26", "vend": "3.6.00 FERNANDA ALVES - MC 05/26", "vd5": 6881.69, "vd6": 28639.93}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.01 FELIX PASETTO 09/02/26", "vd5": 4510.83, "vd6": 4479.86}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.02 VAGO 05/26", "vd5": 445.72, "vd6": 0}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.03 MARCELO DAGOSTIN 02/03/26", "vd5": 20711.3, "vd6": 13926.97}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.04 MARCIO SALES - PJ 19/05/25", "vd5": 10259.55, "vd6": 11742.97}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.05 MARCIA SALES 15/03/21", "vd5": 41952.83, "vd6": 32068.14}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.06 LEANDRO MEDEIROS - PJ 19/05/25", "vd5": 4539.36, "vd6": 5169.35}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.07 VALDIR BUGANSA 16/09/24", "vd5": 11489.8, "vd6": 13337.73}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.08 SIDNEI OLIVEIRA - PJ - 07/12/23", "vd5": 6904.56, "vd6": 1844.92}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.09 VALCILENE VOLTOLINI 09/09/24", "vd5": 7071.27, "vd6": 10169.23}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.1.00 EDIOMAR VICENTE - SUP PR I 08/24", "vend": "4.1.10 RICARDO ALVES 02/03/26", "vd5": 16107.04, "vd6": 12462.16}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.01 AGUINALDO CHAGAS - PJ - 11/08/23", "vd5": 13911.74, "vd6": 18726.76}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.02 CLARENILZE KAISER - PJ 10/06/2024", "vd5": 9969.42, "vd6": 16842.67}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.03 MARIA CAROLINA 22/04/26", "vd5": 6393.98, "vd6": 3853.76}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.04 ADERBAL VELOZO 04/04/26", "vd5": 6182.24, "vd6": 27251.79}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.05 ROGER BELLINI 08/06/26", "vd5": 2248.67, "vd6": 2462.08}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.06 JOAO BACH 01/10/18", "vd5": 8872.89, "vd6": 12225.74}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.07 ANDREY GOLIONOSKI 18/12/23", "vd5": 9687.71, "vd6": 8614.78}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.08 VAGO 05/26", "vd5": 1028.97, "vd6": 721.15}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.09 VAGO 05/26", "vd5": 1896.72, "vd6": 1362.72}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.2.00 MAURO SUP PR II - 02/02/26", "vend": "4.2.10 PATRICIA NOGUEIRA 09/03/26", "vd5": 8222.0, "vd6": 20316.92}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.01 DOUGLAS CORREA 22/04/26", "vd5": 4465.41, "vd6": 3243.25}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.02 JEAN FELIPE 04/04/26", "vd5": 12520.61, "vd6": 4972.0}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.03 MARCIO GERMINIASI 09/06/25", "vd5": 25679.14, "vd6": 17494.76}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.04 EDER ANDRADE 08/09/25", "vd5": 12270.05, "vd6": 8520.32}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.05 VAGO 02/26", "vd5": 571.33, "vd6": 180.01}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.06 ANDRE PINHEIRO 20/10/25", "vd5": 37157.68, "vd6": 24026.53}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.07 VAMILTON JUNIOR 14/09/20", "vd5": 20359.45, "vd6": 9420.26}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.08 ELIELTON FRAGA 06/12/21", "vd5": 15692.48, "vd6": 10379.09}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.09 DONIZETE OLIVEIRA 19/01/26", "vd5": 16499.18, "vd6": 11246.75}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.3.00 CLEOBIS SUP PR III 11/25", "vend": "4.3.10 VAGO 05/26", "vd5": 436.29, "vd6": -25.24}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.01 MURILO JORGE - 05/05/25", "vd5": 13046.05, "vd6": 46953.62}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.02 JORGE FADEL - 05/05/25", "vd5": 38450.47, "vd6": 20965.88}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.03 FILIPE CRESCENCIO 10/02/25", "vd5": 17202.27, "vd6": 8885.75}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.04 CARLA BORJAS 22/04/26", "vd5": 5046.48, "vd6": 2337.81}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.05 AGENOR MELO 08/06/20", "vd5": 14335.35, "vd6": 13341.26}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.06 JULIANA CARDOSO 22/04/26", "vd5": 20232.5, "vd6": 8293.23}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.07 TIAGO SANTOS 12/01/26", "vd5": 4732.7, "vd6": 2854.56}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.08 ANDREA RODRIGUES 22/04/26", "vd5": 21590.06, "vd6": 15025.32}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.10 LEANDRO CAETANO 22/04/26", "vd5": 29430.5, "vd6": 11971.29}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.4.00 LUCIO NUNES 04/04/26", "vend": "4.4.11 JEFFERSON SILVA 23/03/26", "vd5": 10845.95, "vd6": 9801.4}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.01 ROBERTO GRIGOLO 12/01/26", "vd5": 18649.64, "vd6": 9317.91}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.02 GILMAR BELOTTO  - PJ 09/07/24", "vd5": 27265.99, "vd6": 10385.55}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.03 FABIO CASARIL 12/04/21", "vd5": 13330.12, "vd6": 6697.69}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.04 TATIANA SCHEFFER - 04/03/24", "vd5": 12677.89, "vd6": 9324.94}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.05 MATHEUS SIMIONI 04/04/26", "vd5": 22726.65, "vd6": 13439.8}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.06 GEOVANI SOUZA 13/01/25", "vd5": 20226.45, "vd6": 8651.77}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.07 VAGO 05/26", "vd5": 17280.82, "vd6": 8538.23}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.08 ABEL PEREIRA 19/01/26", "vd5": 24464.41, "vd6": 9559.66}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.5.00 GUILHERME - SUP SC II 11/25", "vend": "4.5.09 LIOMAR TIRELLI 09/02/26", "vd5": 37140.42, "vd6": 36364.92}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.6.00 MICHELE PAULA - MC SC I - 06/18", "vend": "4.6.00 MICHELE PAULA - MC SC I - 06/18", "vd5": 153348.2, "vd6": 141559.02}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.7.00 KARIN VOLPATO- MC PR I - 07/23", "vend": "4.7.00 KARIN VOLPATO- MC PR I - 07/23", "vd5": 36638.31, "vd6": 40891.72}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.8.00 SIDNEY SCARPARO - MC RS I 01/21", "vend": "4.8.00 SIDNEY SCARPARO - MC RS I 01/21", "vd5": 111640.37, "vd6": 16309.37}, {"reg": "4.0.00 ALBERTO REG SUL - 05/25", "sup": "4.9.00 LEONARDO ALMEIDA MC RS - PJ 05/26", "vend": "4.9.00 LEONARDO ALMEIDA MC RS - PJ 05/26", "vd5": 2728.6, "vd6": 3160.1}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.00 JOSEANE COORD. TLV/OL", "vd5": 0, "vd6": 0}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.01 VINICIUS 07/25", "vd5": 15905.98, "vd6": 23468.46}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.02 ALESSANDRA - 06/2017", "vd5": 25164.85, "vd6": 18489.96}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.03 JULIANE 10/2024", "vd5": 27384.79, "vd6": 19225.96}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.05 DRIELLE - 10/2022", "vd5": 23523.04, "vd6": 13398.78}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.06 CRISTIANE 21/05/26", "vd5": 15925.06, "vd6": 8650.48}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.07 KAYO 21/05/26", "vd5": 0, "vd6": 1830.86}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.09 ENILDE - 07/2016", "vd5": 13536.41, "vd6": 16182.96}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.10 GISELE - 11/2015", "vd5": 14506.49, "vd6": 12039.22}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.11 ADRIANA 05/08/24", "vd5": 23073.81, "vd6": 19205.9}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.12 RHOGER 02/25", "vd5": 14769.53, "vd6": 11065.84}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.15 VANESSA 02/2024", "vd5": 26798.79, "vd6": 19742.66}, {"reg": "5.1.00 JOSEANE COORD. TLV/OL", "sup": "5.1.00 JOSEANE COORD. TLV/OL", "vend": "5.1.20 PROSPECTADO VAGO", "vd5": 0, "vd6": 0}];
+const D5=20, D6=15, D6T=21;
+const fmtR=v=>v.toLocaleString('pt-BR',{maximumFractionDigits:0});
+const fmtP=v=>(v>=0?'+':'')+(v*100).toFixed(1)+'%';
+const ALL='— Todos —';
+Chart.defaults.color='#cdd8ef';
+Chart.defaults.font.family="'Inter','Segoe UI',Arial,sans-serif";
+Chart.defaults.borderColor='rgba(120,150,200,.12)';
+
+function uniq(a){return [...new Set(a)];}
+function fillSel(sel,opts,withAll=true){
+  const prev=sel.value;
+  sel.innerHTML='';
+  if(withAll){const o=document.createElement('option');o.value='';o.textContent=ALL;sel.appendChild(o);}
+  opts.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o);});
+  if([...sel.options].some(o=>o.value===prev))sel.value=prev;
+}
+function aggregate(rows,key){
+  const m={};
+  rows.forEach(r=>{const k=r[key];if(!m[k])m[k]={name:k,vd5:0,vd6:0};m[k].vd5+=r.vd5;m[k].vd6+=r.vd6;});
+  return Object.values(m).map(o=>{
+    o.vmd5=o.vd5/D5; o.vmd6=o.vd6/D6; o.proj=o.vmd6*D6T;
+    o.dR=o.vd6-o.vd5; o.dP=o.vd5?o.vd6/o.vd5-1:0;
+    o.dVmd=o.vmd5?o.vmd6/o.vmd5-1:0;
+    o.projR=o.proj-o.vd5; o.projP=o.vd5?o.proj/o.vd5-1:0;
+    return o;
+  });
+}
+function totals(list){
+  const t={vd5:0,vd6:0};list.forEach(o=>{t.vd5+=o.vd5;t.vd6+=o.vd6;});
+  t.vmd5=t.vd5/D5;t.vmd6=t.vd6/D6;t.proj=t.vmd6*D6T;
+  t.dR=t.vd6-t.vd5;t.dP=t.vd5?t.vd6/t.vd5-1:0;t.dVmd=t.vmd5?t.vmd6/t.vmd5-1:0;
+  t.projR=t.proj-t.vd5;t.projP=t.vd5?t.proj/t.vd5-1:0;return t;
+}
+
+const charts={};
+function makeChart(id,labels,datasets){
+  if(charts[id])charts[id].destroy();
+  charts[id]=new Chart(document.getElementById(id),{type:'bar',data:{labels,datasets},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,color:'#cdd8ef'}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': R$ '+fmtR(c.parsed.y)}}},
+      scales:{y:{ticks:{callback:v=>fmtR(v),font:{size:10}},grid:{color:'rgba(120,150,200,.1)'}},
+              x:{ticks:{font:{size:10},maxRotation:55},grid:{display:false}}}}});
+}
+const C5='rgba(147,164,196,.85)', C6='#3d7bff', CP='#f4b740';
+
+function kpiCard(lab,val,subTxt,subClass){
+  return `<div class="kpi"><div class="lab">${lab}</div><div class="val">R$ ${fmtR(val)}</div>`+
+    (subTxt?`<div class="sub ${subClass}">${subTxt}</div>`:'')+`</div>`;
+}
+function countCard(lab,n,total,cls){
+  const pct=total?` <span style="font-size:13px;color:var(--muted)">(${(n/total*100).toFixed(0)}% de ${total})</span>`:'';
+  return `<div class="kpi ${cls}"><div class="lab">${lab}</div><div class="cnt ${cls==='good'?'up':'down'}">${n}${pct}</div></div>`;
+}
+function renderKpi(elId,t,list){
+  const acima=list.filter(o=>o.projP>=0).length;
+  const abaixo=list.filter(o=>o.projP<0).length;
+  document.getElementById(elId).innerHTML=
+    kpiCard('VD NF Mês 05',t.vd5,'','')+
+    kpiCard('VD NF Mês 06 (realizado)',t.vd6,fmtP(t.dP)+' vs M05',t.dP>=0?'up':'down')+
+    kpiCard('VMD Mês 06 (R$/dia)',t.vmd6,fmtP(t.dVmd)+' vs VMD M05',t.dVmd>=0?'up':'down')+
+    kpiCard('Projeção Mês 06',t.proj,fmtP(t.projP)+' vs M05',t.projP>=0?'up':'down')+
+    countCard('Projetando ACIMA do M05',acima,list.length,'good')+
+    countCard('Projetando ABAIXO do M05',abaixo,list.length,'bad');
+}
+
+const COLS=[['name','Nome',false],['vd5','VD NF M05',true],['vd6','VD NF M06 real',true],
+['dR','Δ R$',true],['dP','Δ % (06)',false],['vmd5','VMD M05',true],['vmd6','VMD M06',true],
+['dVmd','Δ VMD %',false],['proj','Projeção M06',true],['projR','Proj vs M05 R$',true],['projP','Proj vs M05 %',false]];
+
+function renderTable(elId,list,t,sortState){
+  const tbl=document.getElementById(elId);
+  if(sortState&&sortState.col){
+    const c=sortState.col,dir=sortState.dir;
+    list=[...list].sort((a,b)=>{let x=a[c],y=b[c];if(typeof x==='string')return dir*x.localeCompare(y);return dir*(x-y);});
+  }
+  let h='<thead><tr>'+COLS.map(c=>`<th data-col="${c[0]}">${c[1]}</th>`).join('')+'</tr></thead><tbody>';
+  list.forEach(o=>{
+    h+='<tr>'+COLS.map(c=>{
+      const k=c[0],v=o[k];
+      if(k==='name')return `<td title="${v}">${v}</td>`;
+      if(['dP','dVmd','projP'].includes(k))return `<td class="${v>=0?'up':'down'}">${fmtP(v)}</td>`;
+      const cls=(k==='dR'||k==='projR')?(v>=0?'up':'down'):'';
+      return `<td class="${cls}">${fmtR(v)}</td>`;
+    }).join('')+'</tr>';
+  });
+  h+='</tbody><tfoot><tr>'+COLS.map(c=>{
+    const k=c[0],v=t[k];
+    if(k==='name')return '<td>TOTAL</td>';
+    if(['dP','dVmd','projP'].includes(k))return `<td>${fmtP(v)}</td>`;
+    return `<td>${fmtR(v)}</td>`;
+  }).join('')+'</tr></tfoot>';
+  tbl.innerHTML=h;
+  tbl.querySelectorAll('th').forEach(th=>th.onclick=()=>{
+    const col=th.dataset.col;
+    if(sortState.col===col)sortState.dir*=-1;else{sortState.col=col;sortState.dir=col==='name'?1:-1;}
+    renderTable(elId,list,t,sortState);
+  });
+}
+
+const regSort={col:'vd6',dir:-1};
+function initReg(){fillSel(document.getElementById('reg-f-reg'),uniq(RAW.map(r=>r.reg)).sort());}
+function updateReg(){
+  const f=document.getElementById('reg-f-reg').value;
+  let rows=RAW; if(f)rows=rows.filter(r=>r.reg===f);
+  const list=aggregate(rows,'reg').sort((a,b)=>b.vd6-a.vd6);
+  const t=totals(list); renderKpi('reg-kpi',t,list);
+  const labs=list.map(o=>o.name.split(' ')[0]);
+  makeChart('reg-c1',labs,[{label:'Mês 05',data:list.map(o=>o.vd5),backgroundColor:C5},
+    {label:'Mês 06 (real)',data:list.map(o=>o.vd6),backgroundColor:C6},
+    {label:'Projeção M06',data:list.map(o=>o.proj),backgroundColor:CP}]);
+  makeChart('reg-c2',labs,[{label:'VMD Mês 05',data:list.map(o=>o.vmd5),backgroundColor:C5},
+    {label:'VMD Mês 06',data:list.map(o=>o.vmd6),backgroundColor:C6}]);
+  renderTable('reg-t',list,t,regSort);
+}
+
+const supSort={col:'vd6',dir:-1};
+function initSup(){fillSel(document.getElementById('sup-f-reg'),uniq(RAW.map(r=>r.reg)).sort());refreshSupSup();}
+function refreshSupSup(){
+  const reg=document.getElementById('sup-f-reg').value;
+  let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg);
+  fillSel(document.getElementById('sup-f-sup'),uniq(rows.map(r=>r.sup)).sort());
+}
+function updateSup(){
+  const reg=document.getElementById('sup-f-reg').value, sup=document.getElementById('sup-f-sup').value;
+  let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg); if(sup)rows=rows.filter(r=>r.sup===sup);
+  const list=aggregate(rows,'sup').sort((a,b)=>b.vd6-a.vd6);
+  const t=totals(list); renderKpi('sup-kpi',t,list);
+  const labs=list.map(o=>{const p=o.name.split(' ');return p[1]||p[0];});
+  makeChart('sup-c1',labs,[{label:'Mês 05',data:list.map(o=>o.vd5),backgroundColor:C5},
+    {label:'Mês 06 (real)',data:list.map(o=>o.vd6),backgroundColor:C6},
+    {label:'Projeção M06',data:list.map(o=>o.proj),backgroundColor:CP}]);
+  makeChart('sup-c2',labs,[{label:'VMD Mês 05',data:list.map(o=>o.vmd5),backgroundColor:C5},
+    {label:'VMD Mês 06',data:list.map(o=>o.vmd6),backgroundColor:C6}]);
+  renderTable('sup-t',list,t,supSort);
+}
+
+const vendSort={col:'vd6',dir:-1};
+function initVend(){fillSel(document.getElementById('vend-f-reg'),uniq(RAW.map(r=>r.reg)).sort());refreshVendSup();}
+function refreshVendSup(){
+  const reg=document.getElementById('vend-f-reg').value;
+  let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg);
+  fillSel(document.getElementById('vend-f-sup'),uniq(rows.map(r=>r.sup)).sort()); refreshVendVend();
+}
+function refreshVendVend(){
+  const reg=document.getElementById('vend-f-reg').value, sup=document.getElementById('vend-f-sup').value;
+  let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg); if(sup)rows=rows.filter(r=>r.sup===sup);
+  fillSel(document.getElementById('vend-f-vend'),uniq(rows.map(r=>r.vend)).sort());
+}
+function updateVend(){
+  const reg=document.getElementById('vend-f-reg').value, sup=document.getElementById('vend-f-sup').value, vend=document.getElementById('vend-f-vend').value;
+  let rows=RAW; if(reg)rows=rows.filter(r=>r.reg===reg); if(sup)rows=rows.filter(r=>r.sup===sup); if(vend)rows=rows.filter(r=>r.vend===vend);
+  const list=aggregate(rows,'vend').sort((a,b)=>b.vd6-a.vd6);
+  const t=totals(list); renderKpi('vend-kpi',t,list);
+  const top=list.slice(0,15);
+  const labs=top.map(o=>{const p=o.name.split(' ');return (p[1]||'')+' '+(p[2]||'');});
+  makeChart('vend-c1',labs,[{label:'Mês 05',data:top.map(o=>o.vd5),backgroundColor:C5},
+    {label:'Mês 06 (real)',data:top.map(o=>o.vd6),backgroundColor:C6},
+    {label:'Projeção M06',data:top.map(o=>o.proj),backgroundColor:CP}]);
+  makeChart('vend-c2',labs,[{label:'VMD Mês 05',data:top.map(o=>o.vmd5),backgroundColor:C5},
+    {label:'VMD Mês 06',data:top.map(o=>o.vmd6),backgroundColor:C6}]);
+  renderTable('vend-t',list,t,vendSort);
+}
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById('panel-'+b.dataset.tab).classList.add('active');
+});
+document.getElementById('reg-f-reg').onchange=updateReg;
+document.getElementById('sup-f-reg').onchange=()=>{refreshSupSup();updateSup();};
+document.getElementById('sup-f-sup').onchange=updateSup;
+document.getElementById('vend-f-reg').onchange=()=>{refreshVendSup();updateVend();};
+document.getElementById('vend-f-sup').onchange=()=>{refreshVendVend();updateVend();};
+document.getElementById('vend-f-vend').onchange=updateVend;
+initReg();updateReg();initSup();updateSup();initVend();updateVend();
+</script>
+</body>
+</html>
